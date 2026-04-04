@@ -1,0 +1,97 @@
+<section id="experience">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">// 03 — EXPÉRIENCES</span>
+      <h2 class="section-title">
+        ANALOG_LOGS <span class="accent">// SESSION_HISTORY</span>
+      </h2>
+    </div>
+
+    <div class="timeline-layout">
+      <!-- Experience timeline -->
+      <div class="timeline">
+        <div class="timeline-line"></div>
+
+        @for (exp of experiences; track exp.company; let i = $index) {
+          <div class="timeline-item" [class.current]="exp.current">
+            <div class="timeline-dot" [class.current]="exp.current">
+              @if (exp.current) {
+                <span class="dot-pulse"></span>
+              }
+            </div>
+            <div class="timeline-content">
+              <div class="exp-header">
+                <div class="exp-meta">
+                  <span class="exp-period" [style.color]="exp.color">{{
+                    exp.period
+                  }}</span>
+                  @if (exp.current) {
+                    <span class="exp-badge">ACTUEL</span>
+                  }
+                </div>
+                <h3 class="exp-title">{{ exp.title }}</h3>
+                <div class="exp-company">
+                  <span class="material-symbols-outlined">business</span>
+                  {{ exp.company }}
+                </div>
+              </div>
+
+              @if (exp.description) {
+                <p class="exp-description">{{ exp.description }}</p>
+              }
+
+              @if (exp.tasks && exp.tasks.length > 0) {
+                <ul class="exp-tasks">
+                  @for (task of exp.tasks; track task) {
+                    <li>
+                      <span class="task-arrow">→</span>
+                      {{ task }}
+                    </li>
+                  }
+                </ul>
+              }
+
+              @if (exp.stack && exp.stack.length > 0) {
+                <div class="exp-stack">
+                  @for (tech of exp.stack; track tech) {
+                    <span
+                      class="stack-chip"
+                      [style.border-color]="exp.color + '60'"
+                      [style.color]="exp.color"
+                    >
+                      {{ tech }}
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Education sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-block">
+          <span class="section-label">FORMATION</span>
+          @for (edu of education; track edu.school) {
+            <div class="edu-item">
+              <div class="edu-year">{{ edu.year }}</div>
+              <div class="edu-school">{{ edu.school }}</div>
+              <div class="edu-degree">{{ edu.degree }}</div>
+            </div>
+          }
+        </div>
+
+        <div class="sidebar-block">
+          <span class="section-label">CENTRES D'INTÉRÊT</span>
+          @for (interest of interests; track interest.label) {
+            <div class="interest-item">
+              <span class="material-symbols-outlined">{{ interest.icon }}</span>
+              <span>{{ interest.label }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

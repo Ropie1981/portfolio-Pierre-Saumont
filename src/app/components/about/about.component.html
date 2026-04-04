@@ -1,0 +1,108 @@
+<section id="about">
+  <div class="container">
+    <!-- Section header -->
+    <div class="section-header">
+      <span class="section-label">// 01 — PROFIL</span>
+      <h2 class="section-title">
+        SYSTEM_LOG <span class="accent">// PROFILE_BRIEF</span>
+      </h2>
+    </div>
+
+    <div class="about-grid">
+      <!-- Left: Photo block -->
+      <div class="photo-block">
+        <div class="photo-frame">
+          <div class="photo-placeholder">
+            <span class="material-symbols-outlined photo-icon">person</span>
+            <span class="photo-label">PIERRE SAUMONT</span>
+            <span class="photo-sub">VILLEURBANNE, LYON</span>
+          </div>
+          <div class="photo-badge">
+            <span class="badge-on">ON</span>
+          </div>
+        </div>
+
+        <!-- Contact panel -->
+        <div class="contact-panel">
+          <div class="contact-item">
+            <span class="material-symbols-outlined">phone</span>
+            <span>06 10 75 43 79</span>
+          </div>
+          <div class="contact-item">
+            <span class="material-symbols-outlined">mail</span>
+            <a href="mailto:pierre.saumont@gmail.com"
+              >pierre.saumont&#64;gmail.com</a
+            >
+          </div>
+          <div class="contact-item">
+            <span class="material-symbols-outlined">location_on</span>
+            <span>69100 Villeurbanne</span>
+          </div>
+          <div class="contact-item">
+            <span class="material-symbols-outlined">open_in_new</span>
+            <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+          </div>
+          <div class="contact-item">
+            <span class="material-symbols-outlined">code</span>
+            <a href="https://github.com" target="_blank">GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Content -->
+      <div class="about-content">
+        <p class="about-intro">
+          Développeur Web Fullstack en poste depuis
+          <strong>septembre 2023</strong>, avec une spécialisation front-end
+          Angular. Issu d'une reconversion réussie après 11 ans en assurance et
+          6 ans comme technicien son, j'apporte une
+          <strong>vision transversale</strong> et une forte adaptabilité aux
+          projets techniques.
+        </p>
+
+        <!-- Cards grid -->
+        <div class="cards-grid">
+          @for (card of cards; track card.title) {
+            <div class="card" [style.border-color]="card.color">
+              <span class="card-label" [style.color]="card.color">{{
+                card.category
+              }}</span>
+              <h3 class="card-title">{{ card.title }}</h3>
+              <p class="card-desc">{{ card.desc }}</p>
+            </div>
+          }
+        </div>
+
+        <!-- Stats banner -->
+        <div class="stats-banner">
+          @for (stat of stats; track stat.label) {
+            <div class="stat-item">
+              <span class="stat-value">{{ stat.value }}</span>
+              <span class="stat-label">{{ stat.label }}</span>
+            </div>
+          }
+        </div>
+
+        <!-- Languages -->
+        <div class="languages-block">
+          <span class="section-label">LANGUES</span>
+          <div class="lang-list">
+            @for (lang of languages; track lang.name) {
+              <div class="lang-item">
+                <span class="lang-name">{{ lang.name }}</span>
+                <div class="lang-bar">
+                  <div
+                    class="lang-fill"
+                    [style.width]="lang.pct + '%'"
+                    [style.background]="lang.color"
+                  ></div>
+                </div>
+                <span class="lang-level">{{ lang.level }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,702 @@
+// ─── ANALOG CONSOLE DRUM MACHINE ─────────────────────────────────────────────
+// Aesthetic: Teenage Engineering EP-133 × Roland TR-808 × vintage hardware
+// Palette: warm cream chassis, dark matte panel, amber VFD, rubber pads
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+
+// ─── Design Tokens ────────────────────────────────────────────────────────────
+
+$font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+$chassis-bg:    #cec9c2;   // warm beige plastic body
+$panel-bg:      #1c1c1e;   // dark matte inner panel
+$panel-surface: #252527;   // slightly lighter surface
+$btn-face:      #c8c3bc;   // rubber pad / button face
+$btn-shadow-d:  #8a857e;   // dark edge shadow
+$btn-shadow-l:  #e8e3dc;   // light highlight
+
+$label-dark:    #3a3530;
+$label-mid:     #6a6560;
+$label-light:   #8a8580;
+
+$amber:         #ffb800;
+$amber-dim:     #ffb80088;
+$orange:        #e84e1b;
+$display-bg:    #141410;
+
+$pad-purple:    #9b59b6;
+$pad-purple-lo: #6c3483;
+$pad-green:     #27ae60;
+$pad-green-lo:  #1a6b3c;
+$pad-pink:      #e91e8c;
+$pad-pink-lo:   #9c0f5f;
+
+$pad-off:       #2e2c2a;
+$pad-off-rim:   #1a1818;
+$pad-off-hi:    #3e3c3a;
+
+$play-off:      #545251;
+$play-on:       #d42a02;
+$util-face:     #c7c3c0;
+
+
+// ─── Main Machine Body ────────────────────────────────────────────────────────
+
+.console-body {
+  font-family: $font-mono;
+  background: $chassis-bg;
+  border-radius: 14px;
+  padding: 24px 22px 20px;
+  position: relative;
+  min-width: 860px;
+  max-width: 960px;
+  margin: 7rem auto;
+
+  // Textured plastic grain
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.015) 0px,
+        rgba(0,0,0,0.015) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // Outer bevel
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.6),
+    0 1px 0 2px rgba(0,0,0,0.25),
+    0 4px 0 2px rgba(0,0,0,0.15),
+    0 24px 48px rgba(0,0,0,0.5),
+    0 4px 12px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -2px 0 rgba(0,0,0,0.1);
+
+  > * { position: relative; z-index: 1; }
+}
+
+
+// ─── Corner Screws ────────────────────────────────────────────────────────────
+
+.screw {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #d8d3cc, #6a6560);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+  z-index: 10;
+
+  &__slot {
+    position: absolute;
+    inset: 50%;
+    width: 6px;
+    height: 1.5px;
+    background: rgba(0,0,0,0.35);
+    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 1px;
+  }
+
+  &--tl { top: 10px; left: 10px; }
+  &--tr { top: 10px; right: 10px; }
+  &--bl { bottom: 10px; left: 10px; }
+  &--br { bottom: 10px; right: 10px; }
+}
+
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+
+.console-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid rgba(0,0,0,0.18);
+
+  &__branding {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+.branding {
+  &__series {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: $label-mid;
+    text-transform: uppercase;
+  }
+
+  &__name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: $label-dark;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  &__model {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: $label-light;
+  }
+}
+
+
+// ─── Beat LEDs ────────────────────────────────────────────────────────────────
+
+.beat-leds {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.beat-led-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.beat-led {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #2a2826;
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(0,0,0,0.3);
+  transition: background 0.04s, box-shadow 0.04s;
+
+  &--on {
+    background: #39ff14;
+    box-shadow:
+      inset 0 1px 1px rgba(0,0,0,0.15),
+      0 0 6px #39ff14,
+      0 0 12px rgba(57,255,20,0.4),
+      0 0 0 1px rgba(0,0,0,0.3);
+  }
+
+  &__label {
+    font-size: 8px;
+    color: $label-light;
+    letter-spacing: 0.1em;
+  }
+}
+
+
+// ─── VFD Status Display ───────────────────────────────────────────────────────
+
+.vfd-display {
+  background: $display-bg;
+  border-radius: 5px;
+  padding: 7px 12px;
+  border: 2px solid #0a0a08;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.8),
+    inset 0 0 0 1px rgba(255,255,255,0.03);
+
+  &__text {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: rgba($amber, 0.35);
+    text-shadow: none;
+    transition: color 0.15s, text-shadow 0.15s;
+
+    &--playing {
+      color: $amber;
+      text-shadow:
+        0 0 8px $amber,
+        0 0 20px rgba($amber, 0.4);
+    }
+  }
+}
+
+
+// ─── Sequencer Panel ──────────────────────────────────────────────────────────
+
+.sequencer-panel {
+  background: $panel-bg;
+  border-radius: 8px;
+  padding: 12px 10px;
+  box-shadow:
+    inset 0 2px 10px rgba(0,0,0,0.6),
+    inset 0 0 0 1px rgba(255,255,255,0.04),
+    0 1px 0 rgba(255,255,255,0.15);
+}
+
+
+// ─── Step Ruler ───────────────────────────────────────────────────────────────
+
+.step-ruler {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 3px;
+  margin-bottom: 6px;
+  padding: 0 1px;
+
+  &__spacer { /* intentional gap for label column */ }
+
+  &__nums {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 3px;
+  }
+
+  &__num {
+    font-size: 8px;
+    color: $label-mid;
+    text-align: center;
+    letter-spacing: 0.05em;
+    transition: color 0.05s;
+
+    &--active {
+      color: $amber;
+      text-shadow: 0 0 6px $amber-dim;
+    }
+
+    &--group-end {
+      margin-right: 5px;
+    }
+  }
+}
+
+
+// ─── Track Rows ───────────────────────────────────────────────────────────────
+
+.track-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.track-row {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 3px;
+  align-items: center;
+
+  &__label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+  }
+
+  &__name {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: $label-mid;
+    text-transform: uppercase;
+  }
+
+  &__label--purple &__name { color: #bf7fff; }
+  &__label--green  &__name { color: #5dbb8a; }
+  &__label--pink   &__name { color: #ff6ec7; }
+
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 3px;
+  }
+}
+
+
+// ─── Pad Buttons (EP-133 style) ───────────────────────────────────────────────
+
+.pad-btn {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  background: $pad-off;
+  outline: none;
+  transition: transform 0.05s, background 0.05s;
+
+  // Physical depth — raised rubber pad feel
+  box-shadow:
+    2px 2px 4px rgba(0,0,0,0.55),
+    0.5px 0.5px 1px $pad-off-hi inset,
+    -1px -1px 3px $pad-off-rim inset;
+
+  &__pip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  &:active {
+    transform: scale(0.92);
+    box-shadow:
+      0 0 0 rgba(0,0,0,0),
+      inset 1px 1px 3px rgba(0,0,0,0.8);
+  }
+
+  // Active — purple / KICK / TOM
+  &--on#{&}--purple {
+    background: $pad-purple;
+    box-shadow:
+      2px 2px 4px rgba(0,0,0,0.45),
+      1px 1px 2px rgba(200,150,255,0.35) inset,
+      -2px -2px 4px $pad-purple-lo inset,
+      0 0 8px rgba($pad-purple, 0.4);
+
+    .pad-btn__pip { background: rgba(255,255,255,0.25); }
+  }
+
+  // Active — green / SNARE / CLAP
+  &--on#{&}--green {
+    background: $pad-green;
+    box-shadow:
+      2px 2px 4px rgba(0,0,0,0.45),
+      1px 1px 2px rgba(100,255,150,0.35) inset,
+      -2px -2px 4px $pad-green-lo inset,
+      0 0 8px rgba($pad-green, 0.35);
+
+    .pad-btn__pip { background: rgba(255,255,255,0.25); }
+  }
+
+  // Active — pink / HH
+  &--on#{&}--pink {
+    background: $pad-pink;
+    box-shadow:
+      2px 2px 4px rgba(0,0,0,0.45),
+      1px 1px 2px rgba(255,150,220,0.35) inset,
+      -2px -2px 4px $pad-pink-lo inset,
+      0 0 8px rgba($pad-pink, 0.35);
+
+    .pad-btn__pip { background: rgba(255,255,255,0.25); }
+  }
+
+  // Current column indicator
+  &--current {
+    outline: 1px solid rgba($amber, 0.45);
+    outline-offset: 1px;
+  }
+
+  &--current#{&}--on {
+    filter: brightness(1.25);
+  }
+
+  // Group separator gap
+  &--group-end {
+    margin-right: 5px;
+  }
+}
+
+
+// ─── Controls Panel ───────────────────────────────────────────────────────────
+
+.controls-panel {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 2px solid rgba(0,0,0,0.14);
+  flex-wrap: wrap;
+}
+
+.ctrl-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &--bpm {
+    gap: 12px;
+  }
+}
+
+
+// ─── Hardware Buttons ─────────────────────────────────────────────────────────
+
+.hw-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border: none;
+  cursor: pointer;
+  font-family: $font-mono;
+  border-radius: 8px;
+  position: relative;
+  transition: transform 0.08s, box-shadow 0.08s;
+  padding: 8px;
+
+  &__icon {
+    font-size: 20px;
+    line-height: 1;
+    display: block;
+  }
+
+  &__label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    display: block;
+    margin-top: auto;
+  }
+
+  // EXIT button
+  &--exit {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    background: $btn-face;
+    color: $label-dark;
+    width: auto;
+    height: auto;
+    padding: 8px 14px;
+    box-shadow:
+      rgba(0,0,0,0.35) 3px 3px 5px,
+      $btn-shadow-l 1px 1px 1px inset,
+      $btn-face -2px -2px 5px inset;
+
+    .hw-btn__icon { font-size: 16px; }
+    .hw-btn__label { font-size: 9px; margin-top: 0; }
+
+    &:active {
+      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 4px rgba(0,0,0,0.5);
+      transform: scale(0.96);
+    }
+
+    &:hover { transform: scale(1.02); }
+  }
+
+  // PLAY button
+  &--play {
+    width: 64px;
+    height: 64px;
+    background: $play-off;
+    color: #fff;
+    box-shadow:
+      rgba(0,0,0,0.4) 4px 4px 6px,
+      rgba(170,168,164,0.5) 1px 1px 1px inset,
+      $play-off -2px -2px 5px inset;
+
+    &:active {
+      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 5px rgba(0,0,0,0.7);
+      transform: scale(0.94);
+    }
+
+    &:hover { transform: scale(1.03); }
+  }
+
+  // PLAYING state (red STOP)
+  &--playing {
+    background: $play-on;
+    box-shadow:
+      rgba(0,0,0,0.4) 4px 4px 6px,
+      #fb702c 2px 2px 8px inset,
+      $play-on -3px -3px 1px inset;
+
+    &:active {
+      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 5px rgba(0,0,0,0.7);
+    }
+  }
+
+  // UTIL buttons (random / clear)
+  &--util {
+    width: 58px;
+    height: 58px;
+    background: $util-face;
+    color: #5f5f5f;
+    box-shadow:
+      rgba(0,0,0,0.35) 4px 4px 6px,
+      rgba(255,255,255,0.8) 1px 1px 1px inset,
+      $util-face -2px -2px 5px inset;
+
+    &:active {
+      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 4px rgba(0,0,0,0.5), $util-face -2px -2px 5px inset;
+      transform: scale(0.94);
+    }
+
+    &:hover { transform: scale(1.02); }
+  }
+
+  &--clear {
+    background: #d42a02;
+    color: #fff;
+    box-shadow:
+      rgba(0,0,0,0.4) 4px 4px 6px,
+      #fb702c 2px 2px 8px inset,
+      #d42a02 -3px -3px 1px inset;
+
+    &:active {
+      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 5px rgba(0,0,0,0.7);
+    }
+  }
+}
+
+
+// ─── BPM Knob ─────────────────────────────────────────────────────────────────
+
+.bpm-knob-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.knob {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  cursor: ns-resize;
+  user-select: none;
+
+  &__body {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+      conic-gradient(from -2deg, #efefff88, #00000088, #efefff88, #00000088, #efefff88),
+      radial-gradient(circle at 30% 25%, #d8d3cc, #6a6560);
+    border: 3px solid rgba(0,0,0,0.6);
+    box-shadow:
+      0 4px 10px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.35);
+    transform: rotate(var(--knob-deg, -135deg));
+    transition: none;
+  }
+
+  &__indicator {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 3px;
+    height: 13px;
+    background: #1a1a1a;
+    border-radius: 2px;
+    transform: translateX(-50%);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  }
+
+  &__notches {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  &__notch {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 7px;
+    height: 1.5px;
+    background: rgba($label-mid, 0.5);
+    border-radius: 1px;
+    transform:
+      translate(-50%)
+      rotate(calc((var(--ni) - 1) * (270deg / 8)))
+      translateX(31px)
+      rotate(calc(-1 * (var(--ni) - 1) * (270deg / 8)));
+    transform-origin: left center;
+  }
+
+  &__label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: $label-mid;
+    text-align: center;
+  }
+}
+
+
+// ─── BPM Display ──────────────────────────────────────────────────────────────
+
+.bpm-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+
+  &__value {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: $amber;
+    text-shadow:
+      0 0 10px $amber,
+      0 0 24px rgba($amber, 0.35);
+    letter-spacing: 0.05em;
+    background: $display-bg;
+    border-radius: 5px;
+    padding: 6px 14px 4px;
+    border: 2px solid #0a0a08;
+    box-shadow:
+      inset 0 2px 6px rgba(0,0,0,0.8),
+      inset 0 0 0 1px rgba(255,255,255,0.02);
+    min-width: 80px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  &__unit {
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: rgba($amber, 0.4);
+    text-align: center;
+  }
+
+  &__range {
+    width: 88px;
+    margin-top: 4px;
+    accent-color: $amber;
+    height: 3px;
+    cursor: pointer;
+  }
+
+  &__range-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 88px;
+    font-size: 7px;
+    color: $label-light;
+    letter-spacing: 0.08em;
+  }
+}
+
+
+// ─── Hint Text ────────────────────────────────────────────────────────────────
+
+.console-hint {
+  font-size: 8px;
+  color: $label-light;
+  letter-spacing: 0.12em;
+  margin-left: auto;
+}

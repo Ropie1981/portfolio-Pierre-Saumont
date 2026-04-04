@@ -1,0 +1,167 @@
+<div class="console-body">
+  <!-- Corner screws -->
+  <div class="screw screw--tl"><div class="screw__slot"></div></div>
+  <div class="screw screw--tr"><div class="screw__slot"></div></div>
+  <div class="screw screw--bl"><div class="screw__slot"></div></div>
+  <div class="screw screw--br"><div class="screw__slot"></div></div>
+
+  <!-- Top bar -->
+  <header class="console-header">
+    <div class="console-header__left">
+      <button class="hw-btn hw-btn--exit" (click)="close()">
+        <span class="material-symbols-outlined hw-btn__icon">arrow_back</span>
+        <span class="hw-btn__label">EXIT</span>
+      </button>
+    </div>
+
+    <div class="console-header__branding">
+      <span class="branding__series">// DRUM MACHINE</span>
+      <h1 class="branding__name">BEAT_LAB</h1>
+      <span class="branding__model">DR-01</span>
+    </div>
+
+    <div class="console-header__right">
+      <!-- Beat position LEDs -->
+      <div class="beat-leds">
+        @for (b of [0, 1, 2, 3]; track b) {
+          <div class="beat-led-group">
+            <div class="beat-led" [class.beat-led--on]="getBeat(b)"></div>
+            <span class="beat-led__label">{{ b + 1 }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Status VFD display -->
+      <div class="vfd-display">
+        <span
+          class="vfd-display__text"
+          [class.vfd-display__text--playing]="isPlaying()"
+        >
+          {{ isPlaying() ? "&#9654; PLAYING" : "&#9632; IDLE" }}
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main sequencer panel -->
+  <main class="sequencer-panel">
+    <!-- Step number ruler -->
+    <div class="step-ruler">
+      <div class="step-ruler__spacer"></div>
+      <div class="step-ruler__nums">
+        @for (n of stepNumbers; track n; let i = $index) {
+          <div
+            class="step-ruler__num"
+            [class.step-ruler__num--active]="activeStep() === i"
+            [class.step-ruler__num--group-end]="(i + 1) % 4 === 0 && i !== 15"
+          >
+            {{ n }}
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Track rows -->
+    <div class="track-rows">
+      @for (track of tracks; track track.name; let ti = $index) {
+        <div class="track-row">
+          <div
+            class="track-row__label"
+            [class.track-row__label--purple]="track.color === 'purple'"
+            [class.track-row__label--green]="track.color === 'green'"
+            [class.track-row__label--pink]="track.color === 'pink'"
+          >
+            <span class="track-row__name">{{ track.name }}</span>
+          </div>
+
+          <div class="track-row__steps">
+            @for (step of track.steps; track $index; let si = $index) {
+              <button
+                class="pad-btn"
+                [class.pad-btn--on]="step"
+                [class.pad-btn--current]="activeStep() === si"
+                [class.pad-btn--purple]="step && track.color === 'purple'"
+                [class.pad-btn--green]="step && track.color === 'green'"
+                [class.pad-btn--pink]="step && track.color === 'pink'"
+                [class.pad-btn--group-end]="(si + 1) % 4 === 0 && si !== 15"
+                (click)="toggleStep(ti, si)"
+              >
+                <span class="pad-btn__pip"></span>
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </main>
+
+  <!-- Bottom controls panel -->
+  <footer class="controls-panel">
+    <!-- Play / Stop -->
+    <div class="ctrl-section ctrl-section--play">
+      <button
+        class="hw-btn hw-btn--play"
+        [class.hw-btn--playing]="isPlaying()"
+        (click)="togglePlay()"
+      >
+        <span class="material-symbols-outlined hw-btn__icon">
+          {{ isPlaying() ? "stop" : "play_arrow" }}
+        </span>
+        <span class="hw-btn__label">{{ isPlaying() ? "STOP" : "PLAY" }}</span>
+      </button>
+    </div>
+
+    <!-- BPM knob + display -->
+    <div class="ctrl-section ctrl-section--bpm">
+      <div class="bpm-knob-wrap">
+        <div
+          class="knob"
+          [style.--knob-deg]="knobDeg() + 'deg'"
+          (mousedown)="onKnobMouseDown($event)"
+          (touchstart)="onKnobTouchStart($event)"
+        >
+          <div class="knob__body">
+            <div class="knob__indicator"></div>
+          </div>
+          <div class="knob__notches">
+            @for (n of knobNotches; track n) {
+              <div class="knob__notch" [style.--ni]="n"></div>
+            }
+          </div>
+        </div>
+        <span class="knob__label">BPM</span>
+      </div>
+
+      <div class="bpm-display">
+        <span class="bpm-display__value">{{ bpm() }}</span>
+        <span class="bpm-display__unit">BPM</span>
+        <input
+          class="bpm-display__range"
+          type="range"
+          min="60"
+          max="200"
+          [value]="bpm()"
+          (input)="onBpmChange($event)"
+        />
+        <div class="bpm-display__range-labels">
+          <span>60</span><span>200</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Utility buttons -->
+    <div class="ctrl-section ctrl-section--utils">
+      <button class="hw-btn hw-btn--util" (click)="randomize()">
+        <span class="material-symbols-outlined hw-btn__icon">shuffle</span>
+        <span class="hw-btn__label">RANDOM</span>
+      </button>
+      <button class="hw-btn hw-btn--util hw-btn--clear" (click)="clearAll()">
+        <span class="material-symbols-outlined hw-btn__icon">close</span>
+        <span class="hw-btn__label">CLEAR</span>
+      </button>
+    </div>
+
+    <!-- Hint -->
+    <p class="console-hint">// CLICK STEPS TO ACTIVATE</p>
+  </footer>
+</div>

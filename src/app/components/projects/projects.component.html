@@ -1,0 +1,49 @@
+<section id="projects">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">// 04 — PROJETS</span>
+      <h2 class="section-title">
+        OUTPUT_CHANNELS <span class="accent">// RELEASES</span>
+      </h2>
+    </div>
+
+    <div class="projects-grid">
+      @for (project of projects; track project.title; let i = $index) {
+        <div class="project-card" [class.featured]="project.featured">
+          <div class="card-top">
+            <div class="card-index">{{ ("0" + (i + 1)).slice(-2) }}</div>
+            @if (project.featured) {
+              <span class="featured-badge">FEATURED</span>
+            }
+          </div>
+
+          <div class="card-body">
+            <div class="project-type">{{ project.type }}</div>
+            <h3 class="project-title">{{ project.title }}</h3>
+            <p class="project-desc">{{ project.desc }}</p>
+          </div>
+
+          <div class="card-footer">
+            <div class="project-tags">
+              @for (tag of project.tags; track tag) {
+                <span class="tag">{{ tag }}</span>
+              }
+            </div>
+            <div class="card-actions">
+              @if (project.github) {
+                <a [href]="project.github" target="_blank" class="card-link">
+                  <span class="material-symbols-outlined">code</span>
+                </a>
+              }
+              @if (project.live) {
+                <a [href]="project.live" target="_blank" class="card-link">
+                  <span class="material-symbols-outlined">open_in_new</span>
+                </a>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

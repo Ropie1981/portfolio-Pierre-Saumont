@@ -1,0 +1,68 @@
+<section id="skills">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">// 02 — STACK</span>
+      <h2 class="section-title">
+        SIGNAL_RACK <span class="accent">// TECH_MATRIX</span>
+      </h2>
+      <p class="section-desc">
+        Chaque technologie est une voie de mixage — niveau, pondération,
+        maîtrise.
+      </p>
+    </div>
+
+    <!-- Main stack: fader board -->
+    <div class="fader-board">
+      @for (skill of mainSkills; track skill.name) {
+        <div class="fader-channel">
+          <div class="fader-track">
+            <div
+              class="fader-fill"
+              [style.height]="skill.level + '%'"
+              [style.background]="skill.color"
+            ></div>
+            <div class="fader-handle" [style.bottom]="skill.level + '%'"></div>
+          </div>
+          <div class="channel-vu">
+            @for (bar of getVuBars(skill.level); track bar.i) {
+              <div
+                class="vu-bar"
+                [class.active]="bar.active"
+                [style.background]="bar.active ? skill.color : 'transparent'"
+              ></div>
+            }
+          </div>
+          <span class="channel-label">{{ skill.name }}</span>
+          <span class="channel-level">{{ skill.level }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- Other skills: tag grid -->
+    <div class="other-skills">
+      <span class="section-label" style="margin-bottom: 1.5rem; display: block"
+        >AUX_CHANNELS // AUTRES OUTILS</span
+      >
+      <div class="skills-grid">
+        @for (group of skillGroups; track group.category) {
+          <div class="skill-group">
+            <h4 class="group-title" [style.color]="group.color">
+              {{ group.category }}
+            </h4>
+            <div class="group-tags">
+              @for (skill of group.skills; track skill) {
+                <span
+                  class="skill-tag"
+                  [style.border-color]="group.color + '50'"
+                  [style.color]="group.color"
+                >
+                  {{ skill }}
+                </span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

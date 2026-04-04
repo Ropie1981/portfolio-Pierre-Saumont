@@ -1,0 +1,81 @@
+<section id="hero">
+  <!-- Background Grid -->
+  <div class="bg-grid"></div>
+
+  <!-- Scanline effect -->
+  <div class="scanline"></div>
+
+  <div class="hero-content">
+    <!-- Top badge -->
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      <span>VILLEURBANNE, LYON</span>
+    </div>
+
+    <!-- Main title -->
+    <div class="hero-title-block">
+      <h1 class="hero-name">
+        <span class="name-line">PIERRE</span>
+        <span class="name-line accent">SAUMONT</span>
+      </h1>
+      <div class="hero-subtitle">
+        <span class="bracket">//</span>
+        <span class="subtitle-text">Développeur Web Fullstack</span>
+        <span class="cursor">█</span>
+      </div>
+    </div>
+
+    <!-- Tag cloud -->
+    <div class="hero-tags">
+      @for (tag of tags; track tag.label) {
+        <span class="tag" [class]="tag.color">{{ tag.label }}</span>
+      }
+    </div>
+
+    <!-- CTA row -->
+    <div class="hero-cta">
+      <button class="btn-primary" (click)="scrollTo('about')">
+        <span class="material-symbols-outlined">arrow_downward</span>
+        EXPLORER LE PROFIL
+      </button>
+      <a href="mailto:pierre.saumont@gmail.com" class="btn-ghost">
+        <span class="material-symbols-outlined">mail</span>
+        pierre.saumont&#64;gmail.com
+      </a>
+    </div>
+
+    <!-- Stats row -->
+    <div class="hero-stats">
+      @for (stat of stats; track stat.label) {
+        <div class="stat">
+          <span class="stat-value">{{ stat.value }}</span>
+          <span class="stat-label">{{ stat.label }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker">
+    <div class="ticker-track">
+      @for (item of tickerItems; track item) {
+        <span class="ticker-item"
+          >{{ item }}<span class="ticker-sep">◆</span></span
+        >
+      }
+      @for (item of tickerItems; track item) {
+        <span class="ticker-item"
+          >{{ item }}<span class="ticker-sep">◆</span></span
+        >
+      }
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator">
+    <div class="scroll-bar">
+      <div class="scroll-progress"></div>
+    </div>
+    <span class="scroll-text">SCROLL_DOWN</span>
+  </div>
+</section>

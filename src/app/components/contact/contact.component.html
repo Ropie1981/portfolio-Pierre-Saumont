@@ -1,0 +1,119 @@
+<section id="contact">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">// 05 — CONTACT</span>
+      <h2 class="section-title">
+        PATCH_BAY <span class="accent">// SEND_DEMO</span>
+      </h2>
+      <p class="section-desc">
+        Ouvert aux opportunités — CDI, freelance, missions. N'hésitez pas à
+        m'écrire.
+      </p>
+    </div>
+
+    <div class="contact-layout">
+      <!-- Form -->
+      <div class="form-block">
+        <form (ngSubmit)="onSubmit()" #f="ngForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">NOM</label>
+              <input
+                type="text"
+                name="name"
+                [(ngModel)]="form.name"
+                class="form-input"
+                placeholder="Jean Dupont"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">EMAIL</label>
+              <input
+                type="email"
+                name="email"
+                [(ngModel)]="form.email"
+                class="form-input"
+                placeholder="jean@société.fr"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">OBJET</label>
+            <input
+              type="text"
+              name="subject"
+              [(ngModel)]="form.subject"
+              class="form-input"
+              placeholder="Proposition de poste / Mission..."
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">MESSAGE</label>
+            <textarea
+              name="message"
+              [(ngModel)]="form.message"
+              class="form-input form-textarea"
+              placeholder="Bonjour Pierre, je vous contacte au sujet de..."
+              rows="6"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="submit-btn" [disabled]="submitted()">
+            @if (!submitted()) {
+              <span class="material-symbols-outlined">send</span>
+              SEND_SIGNAL
+            } @else {
+              <span class="material-symbols-outlined">check_circle</span>
+              SIGNAL_SENT ✓
+            }
+          </button>
+        </form>
+      </div>
+
+      <!-- Info panel -->
+      <div class="info-panel">
+        <div class="info-block">
+          <span class="info-label">CONTACT_DIRECT</span>
+          <div class="info-list">
+            <a href="mailto:pierre.saumont@gmail.com" class="info-link">
+              <span class="material-symbols-outlined">mail</span>
+              pierre.saumont&#64;gmail.com
+            </a>
+            <a href="tel:0610754379" class="info-link">
+              <span class="material-symbols-outlined">phone</span>
+              06 10 75 43 79
+            </a>
+            <div class="info-link static">
+              <span class="material-symbols-outlined">location_on</span>
+              Villeurbanne, Lyon (69)
+            </div>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <span class="info-label">SOCIAL_FEED</span>
+          <div class="info-list">
+            <a href="https://linkedin.com" target="_blank" class="info-link">
+              <span class="material-symbols-outlined">open_in_new</span>
+              LinkedIn
+            </a>
+            <a href="https://github.com" target="_blank" class="info-link">
+              <span class="material-symbols-outlined">code</span>
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <div class="availability-badge">
+          <div class="avail-dot"></div>
+          <div>
+            <div class="avail-title">DISPONIBLE</div>
+            <div class="avail-sub">CDI · Freelance · Mission</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

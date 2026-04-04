@@ -1,0 +1,140 @@
+/* ============================================
+   PIERRE SAUMONT PORTFOLIO — Global Styles
+   Theme: Neo-Brutalist Dark Studio
+   ============================================ */
+
+/* CSS Custom Properties */
+:root {
+  --color-bg: #0a0a0a;
+  --color-surface: #111111;
+  --color-surface-raised: #181818;
+  --color-surface-high: #222222;
+  --color-border: #2a2a2a;
+  --color-border-bright: #3a3a3a;
+
+  --color-primary: #c8a0ff;
+  --color-primary-dim: #9c42f4;
+  --color-primary-dark: #46007d;
+  --color-secondary: #4ded45;
+  --color-tertiary: #ff46f9;
+  --color-danger: #ff4c4c;
+
+  --color-text: #f5f5f5;
+  --color-text-muted: #bdbaba;
+  --color-text-dim: #878686;
+
+  --font-headline: 'Syne', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'DM Sans', sans-serif;
+
+  --shadow-brutal: 4px 4px 0px 0px rgba(200, 160, 255, 0.8);
+  --shadow-brutal-green: 4px 4px 0px 0px rgba(77, 237, 69, 0.8);
+  --shadow-brutal-white: 4px 4px 0px 0px rgba(255, 255, 255, 1);
+  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Selection */
+::selection {
+  background: var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-dim);
+}
+
+/* Grain overlay */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+/* Utility */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  display: block;
+}
+
+.section-title {
+  font-family: var(--font-headline);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes pulseGreen {
+  0%, 100% { box-shadow: 0 0 4px rgba(77, 237, 69, 0.4); }
+  50% { box-shadow: 0 0 12px rgba(77, 237, 69, 0.9); }
+}
+
+/* Fade in animation for sections */
+.animate-in {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
