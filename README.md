@@ -91,10 +91,6 @@ onSubmit() {
 # Build
 npm run build
 
-# Le dossier dist/portfolio/ est prêt pour :
-# - Vercel / Netlify (drag & drop)
-# - AWS S3 + CloudFront
-# - GitHub Pages (avec base-href ajusté)
 ```
 
 ---

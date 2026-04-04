@@ -65,8 +65,16 @@
         transition: border-color 0.3s ease;
       }
 
+      .photo-img {
+        width: auto;
+        margin-right: 50px;        
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+      }
+
       .photo-frame:hover {
-        border-color: var(--color-primary);
+        border-color: var(--color-primary-dim);
       }
 
       .photo-placeholder {

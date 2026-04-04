@@ -2,7 +2,6 @@ import { Component, inject } from "@angular/core";
 import { NavbarComponent } from "./components/navbar/navbar.component";
 import { HomeComponent } from "./components/home/home.component";
 import { AboutComponent } from "./components/about/about.component";
-import { SkillsComponent } from "./components/skills/skills.component";
 import { ExperienceComponent } from "./components/experience/experience.component";
 import { ProjectsComponent } from "./components/projects/projects.component";
 import { ContactComponent } from "./components/contact/contact.component";
@@ -17,7 +16,6 @@ import { AppStateService } from "./services/app-state.service";
     NavbarComponent,
     HomeComponent,
     AboutComponent,
-    SkillsComponent,
     ExperienceComponent,
     ProjectsComponent,
     ContactComponent,
@@ -34,7 +32,6 @@ import { AppStateService } from "./services/app-state.service";
       <main>
         <app-home />
         <app-about />
-        <app-skills />
         <app-experience />
         <app-projects />
         <app-contact />

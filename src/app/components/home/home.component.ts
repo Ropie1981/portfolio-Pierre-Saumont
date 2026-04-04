@@ -15,7 +15,7 @@ export class HomeComponent {
     { label: "Symfony", color: "green" },
     { label: "API Platform", color: "green" },
     { label: "React.js", color: "pink" },
-    { label: "AWS", color: "pink" },
+    { label: "JavaScript", color: "pink" },
     { label: "MySQL", color: "purple" },
     { label: "Git", color: "green" },
   ];
@@ -32,7 +32,6 @@ export class HomeComponent {
     "Symfony",
     "API Platform",
     "React.js",
-    "AWS",
     "MySQL",
     "SCSS",
     "API REST",
@@ -43,7 +42,6 @@ export class HomeComponent {
     "CSS3",
     "UX/UI",
     "GitLab",
-    "CI/CD",
     "Docker",
   ];
 

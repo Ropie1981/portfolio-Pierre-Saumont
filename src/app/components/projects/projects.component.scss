@@ -52,7 +52,7 @@
     }
 
     .project-card:hover {
-      border-color: var(--color-primary);
+      border-color: var(--color-primary) !important;
       transform: translate(-4px, -4px);
       box-shadow: 4px 4px 0px 0px rgba(200, 160, 255, 0.5);
     }

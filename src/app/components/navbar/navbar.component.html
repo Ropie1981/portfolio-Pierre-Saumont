@@ -10,17 +10,17 @@
       <span class="link-index">01</span>
       <span class="link-label">PROFIL</span>
     </a>
-    <a (click)="scrollTo('skills'); closeMenu()" class="nav-link">
-      <span class="link-index">02</span>
-      <span class="link-label">STACK</span>
-    </a>
     <a (click)="scrollTo('experience'); closeMenu()" class="nav-link">
-      <span class="link-index">03</span>
+      <span class="link-index">02</span>
       <span class="link-label">EXPÉRIENCES</span>
     </a>
     <a (click)="scrollTo('projects'); closeMenu()" class="nav-link">
-      <span class="link-index">04</span>
+      <span class="link-index">03</span>
       <span class="link-label">PROJETS</span>
+    </a>
+    <a (click)="openBeatbox(); closeMenu()" class="nav-link">
+      <span class="link-index">04</span>
+      <span class="link-label">LAB</span>
     </a>
   </nav>
 
@@ -36,12 +36,12 @@
     >
       <!-- <span class="material-symbols-outlined">music_cast</span> -->
       <i class="fa-solid fa-drum fa-lg"></i>
-      BEAT_LAB
+      Check Out BEAT_LAB Now!
     </button>
-    <button class="cta-btn" (click)="scrollTo('contact')">
+    <!-- <button class="cta-btn" (click)="scrollTo('contact')">
       SEND_DEMO
       <span class="material-symbols-outlined">send</span>
-    </button>
+    </button> -->
     <button
       class="hamburger"
       (click)="toggleMenu()"

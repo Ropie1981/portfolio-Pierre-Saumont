@@ -130,6 +130,10 @@
         cursor: pointer;
         box-shadow: var(--shadow-brutal-white);
         transition: var(--transition);
+
+        @media screen and (max-width: 748px) {
+          display: none;
+        }
       }
 
       .cta-btn:hover {

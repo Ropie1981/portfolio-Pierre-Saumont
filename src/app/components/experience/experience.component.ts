@@ -20,7 +20,8 @@ export class ExperienceComponent {
         "Développement et maintenance du front-end Angular (composants, services, routing, formulaires réactifs)",
         "Contribution au back-end Symfony avec API Platform (API REST, entités, controllers)",
         "Conception et consommation d'APIs REST en environnement API Platform",
-        "Déploiement et gestion de l'infrastructure cloud AWS",
+        "Déploiement et gestion des clients sur la plateforme Hub3E",
+        "Analyse des besoins clients et proposition de solutions techniques adaptées",
         "Collaboration en méthodologie Agile (sprints, code review, Git flow)",
       ],
       stack: [
@@ -28,7 +29,7 @@ export class ExperienceComponent {
         "TypeScript",
         "Symfony",
         "API Platform",
-        "AWS",
+        "PHP",
         "MySQL",
         "Git",
       ],

@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
+import { AppStateService } from "../../services/app-state.service";
 
 @Component({
   selector: "app-projects",
@@ -7,18 +8,19 @@ import { Component } from "@angular/core";
   styleUrl: "./projects.component.scss",
 })
 export class ProjectsComponent {
+  private appService = inject(AppStateService);
   projects = [
     {
       featured: true,
       type: "PROD · 2023–PRÉSENT",
-      title: "Hub3E — Linkpart",
+      title: "Hub3E · Linkpart",
       desc: "Plateforme SaaS entre ATS et CRM pour les centres de formation. Gestion de l'alternance et mise en relation candidats/entreprises.",
       tags: [
         "Angular",
         "TypeScript",
         "Symfony",
         "API Platform",
-        "AWS",
+        "PHP",
         "MySQL",
       ],
       github: null,
@@ -48,6 +50,15 @@ export class ProjectsComponent {
       title: "Hackathon 24H",
       desc: "Projet réalisé en 24h en équipe de 3. Conception, développement et présentation d'une application React consommant une API publique.",
       tags: ["React.js", "API REST"],
+      github: "https://github.com",
+      live: null,
+    },
+    {
+      featured: true,
+      type: "BEAT_LAB · 2026",
+      title: "Beat Lab · Boîte à rythmes",
+      desc: "Reproduction d'une boîte à rythmes vintage. Focus sur l'interface utilisateur et les animations CSS pour une expérience immersive.",
+      tags: ["Angular", "API Web Audio", "SCSS"],
       github: "https://github.com",
       live: null,
     },

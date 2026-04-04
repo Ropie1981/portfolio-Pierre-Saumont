@@ -1,23 +1,28 @@
 <div class="console-body">
-  <!-- Corner screws -->
-  <div class="screw screw--tl"><div class="screw__slot"></div></div>
-  <div class="screw screw--tr"><div class="screw__slot"></div></div>
-  <div class="screw screw--bl"><div class="screw__slot"></div></div>
-  <div class="screw screw--br"><div class="screw__slot"></div></div>
-
   <!-- Top bar -->
   <header class="console-header">
     <div class="console-header__left">
-      <button class="hw-btn hw-btn--exit" (click)="close()">
-        <span class="material-symbols-outlined hw-btn__icon">arrow_back</span>
-        <span class="hw-btn__label">EXIT</span>
+      <!-- Circular Power Button — EXIT -->
+      <button class="power-btn" (click)="close()">
+        <span class="power-btn__icon">
+          <svg viewBox="0 0 30.143 30.143" xmlns="http://www.w3.org/2000/svg">
+            <g>
+              <path
+                d="M20.034,2.357v3.824c3.482,1.798,5.869,5.427,5.869,9.619c0,5.98-4.848,10.83-10.828,10.83 c-5.982,0-10.832-4.85-10.832-10.83c0-3.844,2.012-7.215,5.029-9.136V2.689C4.245,4.918,0.731,9.945,0.731,15.801 c0,7.921,6.42,14.342,14.34,14.342c7.924,0,14.342-6.421,14.342-14.342C29.412,9.624,25.501,4.379,20.034,2.357z"
+              ></path>
+              <path
+                d="M14.795,17.652c1.576,0,1.736-0.931,1.736-2.076V2.08c0-1.148-0.16-2.08-1.736-2.08 c-1.57,0-1.732,0.932-1.732,2.08v13.496C13.062,16.722,13.225,17.652,14.795,17.652z"
+              ></path>
+            </g>
+          </svg>
+        </span>
       </button>
     </div>
 
     <div class="console-header__branding">
       <span class="branding__series">// DRUM MACHINE</span>
       <h1 class="branding__name">BEAT_LAB</h1>
-      <span class="branding__model">DR-01</span>
+      <span class="branding__model">ROPIE-01</span>
     </div>
 
     <div class="console-header__right">
@@ -37,7 +42,7 @@
           class="vfd-display__text"
           [class.vfd-display__text--playing]="isPlaying()"
         >
-          {{ isPlaying() ? "&#9654; PLAYING" : "&#9632; IDLE" }}
+          {{ isPlaying() ? "&#9654; PLAYING" : "&#9632; WAITING" }}
         </span>
       </div>
     </div>
@@ -97,17 +102,23 @@
 
   <!-- Bottom controls panel -->
   <footer class="controls-panel">
-    <!-- Play / Stop -->
+    <!-- Play / Stop — always-visible separate buttons -->
     <div class="ctrl-section ctrl-section--play">
       <button
         class="hw-btn hw-btn--play"
-        [class.hw-btn--playing]="isPlaying()"
-        (click)="togglePlay()"
+        [class.hw-btn--inactive]="isPlaying()"
+        (click)="!isPlaying() && togglePlay()"
       >
-        <span class="material-symbols-outlined hw-btn__icon">
-          {{ isPlaying() ? "stop" : "play_arrow" }}
-        </span>
-        <span class="hw-btn__label">{{ isPlaying() ? "STOP" : "PLAY" }}</span>
+        <span class="material-symbols-outlined hw-btn__icon">play_arrow</span>
+        <span class="hw-btn__label">PLAY</span>
+      </button>
+      <button
+        class="hw-btn hw-btn--stop"
+        [class.hw-btn--inactive]="!isPlaying()"
+        (click)="isPlaying() && togglePlay()"
+      >
+        <span class="material-symbols-outlined hw-btn__icon">stop</span>
+        <span class="hw-btn__label">STOP</span>
       </button>
     </div>
 
@@ -163,5 +174,10 @@
 
     <!-- Hint -->
     <p class="console-hint">// CLICK STEPS TO ACTIVATE</p>
+    <!-- Corner screws -->
+    <div class="screw screw--tl"><div class="screw__slot"></div></div>
+    <div class="screw screw--tr"><div class="screw__slot"></div></div>
+    <div class="screw screw--bl"><div class="screw__slot"></div></div>
+    <div class="screw screw--br"><div class="screw__slot"></div></div>
   </footer>
 </div>

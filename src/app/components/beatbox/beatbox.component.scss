@@ -1,6 +1,6 @@
 // ─── ANALOG CONSOLE DRUM MACHINE ─────────────────────────────────────────────
 // Aesthetic: Teenage Engineering EP-133 × Roland TR-808 × vintage hardware
-// Palette: warm cream chassis, dark matte panel, amber VFD, rubber pads
+// Palette: dark matte chassis, near-black panel, amber VFD, rubber pads
 
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap');
 
@@ -8,21 +8,22 @@
 
 $font-mono: 'IBM Plex Mono', 'Courier New', monospace;
 
-$chassis-bg:    #cec9c2;   // warm beige plastic body
-$panel-bg:      #1c1c1e;   // dark matte inner panel
-$panel-surface: #252527;   // slightly lighter surface
-$btn-face:      #c8c3bc;   // rubber pad / button face
-$btn-shadow-d:  #8a857e;   // dark edge shadow
-$btn-shadow-l:  #e8e3dc;   // light highlight
+$chassis-bg:    #16161a;   // deep dark body
+$chassis-rim:   #222228;   // subtle rim highlight
+$panel-bg:      #0a0a0d;   // near-black inner panel
+$panel-surface: #111115;   // slightly lighter surface
 
-$label-dark:    #3a3530;
-$label-mid:     #6a6560;
-$label-light:   #8a8580;
+$btn-face:      #2a2a32;   // dark rubber pad / button face
+$btn-shadow-d:  #0a0a0e;   // dark edge shadow
+$btn-shadow-l:  #3a3a46;   // light highlight
+
+$label-dark:    #e2e2ea;
+$label-mid:     #9898aa;
+$label-light:   #66667a;
 
 $amber:         #ffb800;
 $amber-dim:     #ffb80088;
-$orange:        #e84e1b;
-$display-bg:    #141410;
+$display-bg:    #080808;
 
 $pad-purple:    #9b59b6;
 $pad-purple-lo: #6c3483;
@@ -31,13 +32,17 @@ $pad-green-lo:  #1a6b3c;
 $pad-pink:      #e91e8c;
 $pad-pink-lo:   #9c0f5f;
 
-$pad-off:       #2e2c2a;
-$pad-off-rim:   #1a1818;
-$pad-off-hi:    #3e3c3a;
+$pad-off:       #1e1e24;
+$pad-off-rim:   #0e0e12;
+$pad-off-hi:    #2e2e38;
 
-$play-off:      #545251;
-$play-on:       #d42a02;
-$util-face:     #c7c3c0;
+$play-green:    #15803d;
+$play-green-hi: #4ade80;
+$stop-red:      #b91c1c;
+$stop-red-hi:   #f87171;
+$clear-orange:  #c2410c;
+$clear-orange-hi: #fb923c;
+$util-face:     #2a2a35;
 
 
 // ─── Main Machine Body ────────────────────────────────────────────────────────
@@ -52,7 +57,7 @@ $util-face:     #c7c3c0;
   max-width: 960px;
   margin: 7rem auto;
 
-  // Textured plastic grain
+  // Textured dark grain
   &::before {
     content: '';
     position: absolute;
@@ -61,8 +66,8 @@ $util-face:     #c7c3c0;
     background-image:
       repeating-linear-gradient(
         0deg,
-        rgba(0,0,0,0.015) 0px,
-        rgba(0,0,0,0.015) 1px,
+        rgba(255,255,255,0.008) 0px,
+        rgba(255,255,255,0.008) 1px,
         transparent 1px,
         transparent 3px
       );
@@ -72,13 +77,13 @@ $util-face:     #c7c3c0;
 
   // Outer bevel
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.6),
-    0 1px 0 2px rgba(0,0,0,0.25),
-    0 4px 0 2px rgba(0,0,0,0.15),
-    0 24px 48px rgba(0,0,0,0.5),
-    0 4px 12px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.7),
-    inset 0 -2px 0 rgba(0,0,0,0.1);
+    0 0 0 1px rgba(255,255,255,0.06),
+    0 1px 0 2px rgba(0,0,0,0.6),
+    0 4px 0 2px rgba(0,0,0,0.4),
+    0 24px 64px rgba(0,0,0,0.8),
+    0 4px 16px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    inset 0 -2px 0 rgba(0,0,0,0.3);
 
   > * { position: relative; z-index: 1; }
 }
@@ -91,10 +96,10 @@ $util-face:     #c7c3c0;
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #d8d3cc, #6a6560);
+  background: radial-gradient(circle at 35% 30%, #3a3a48, #0e0e14);
   box-shadow:
-    0 1px 2px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.4);
+    0 1px 3px rgba(0,0,0,0.8),
+    inset 0 1px 0 rgba(255,255,255,0.1);
   z-index: 10;
 
   &__slot {
@@ -102,7 +107,7 @@ $util-face:     #c7c3c0;
     inset: 50%;
     width: 6px;
     height: 1.5px;
-    background: rgba(0,0,0,0.35);
+    background: rgba(0,0,0,0.6);
     transform: translate(-50%, -50%) rotate(45deg);
     border-radius: 1px;
   }
@@ -123,7 +128,7 @@ $util-face:     #c7c3c0;
   gap: 16px;
   margin-bottom: 16px;
   padding-bottom: 14px;
-  border-bottom: 2px solid rgba(0,0,0,0.18);
+  border-bottom: 2px solid rgba(255,255,255,0.06);
 
   &__branding {
     display: flex;
@@ -143,7 +148,7 @@ $util-face:     #c7c3c0;
   &__series {
     font-size: 9px;
     letter-spacing: 0.18em;
-    color: $label-mid;
+    color: $label-light;
     text-transform: uppercase;
   }
 
@@ -154,12 +159,14 @@ $util-face:     #c7c3c0;
     color: $label-dark;
     line-height: 1;
     text-transform: uppercase;
+    text-shadow: 0 0 20px rgba($amber, 0.15);
   }
 
   &__model {
     font-size: 9px;
     letter-spacing: 0.2em;
     color: $label-light;
+    margin-top: 6px;
   }
 }
 
@@ -183,10 +190,10 @@ $util-face:     #c7c3c0;
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: #2a2826;
+  background: #111118;
   box-shadow:
-    inset 0 1px 2px rgba(0,0,0,0.6),
-    0 0 0 1px rgba(0,0,0,0.3);
+    inset 0 1px 2px rgba(0,0,0,0.9),
+    0 0 0 1px rgba(0,0,0,0.5);
   transition: background 0.04s, box-shadow 0.04s;
 
   &--on {
@@ -194,7 +201,7 @@ $util-face:     #c7c3c0;
     box-shadow:
       inset 0 1px 1px rgba(0,0,0,0.15),
       0 0 6px #39ff14,
-      0 0 12px rgba(57,255,20,0.4),
+      0 0 14px rgba(57,255,20,0.5),
       0 0 0 1px rgba(0,0,0,0.3);
   }
 
@@ -212,25 +219,25 @@ $util-face:     #c7c3c0;
   background: $display-bg;
   border-radius: 5px;
   padding: 7px 12px;
-  border: 2px solid #0a0a08;
+  border: 2px solid #000;
   box-shadow:
-    inset 0 2px 6px rgba(0,0,0,0.8),
-    inset 0 0 0 1px rgba(255,255,255,0.03);
+    inset 0 2px 8px rgba(0,0,0,0.95),
+    inset 0 0 0 1px rgba(255,255,255,0.02);
 
   &__text {
     display: block;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.18em;
-    color: rgba($amber, 0.35);
+    color: rgba($amber, 0.25);
     text-shadow: none;
     transition: color 0.15s, text-shadow 0.15s;
 
     &--playing {
-      color: $amber;
+      color: $play-green-hi;
       text-shadow:
-        0 0 8px $amber,
-        0 0 20px rgba($amber, 0.4);
+        0 0 8px $play-green-hi,
+        0 0 24px rgba($play-green-hi, 0.5);
     }
   }
 }
@@ -243,9 +250,9 @@ $util-face:     #c7c3c0;
   border-radius: 8px;
   padding: 12px 10px;
   box-shadow:
-    inset 0 2px 10px rgba(0,0,0,0.6),
-    inset 0 0 0 1px rgba(255,255,255,0.04),
-    0 1px 0 rgba(255,255,255,0.15);
+    inset 0 2px 12px rgba(0,0,0,0.9),
+    inset 0 0 0 1px rgba(255,255,255,0.03),
+    0 1px 0 rgba(255,255,255,0.05);
 }
 
 
@@ -268,7 +275,7 @@ $util-face:     #c7c3c0;
 
   &__num {
     font-size: 8px;
-    color: $label-mid;
+    color: $label-light;
     text-align: center;
     letter-spacing: 0.05em;
     transition: color 0.05s;
@@ -326,7 +333,7 @@ $util-face:     #c7c3c0;
 }
 
 
-// ─── Pad Buttons (EP-133 style) ───────────────────────────────────────────────
+// ─── Pad Buttons ─────────────────────────────────────────────────────────────
 
 .pad-btn {
   aspect-ratio: 1;
@@ -338,9 +345,8 @@ $util-face:     #c7c3c0;
   outline: none;
   transition: transform 0.05s, background 0.05s;
 
-  // Physical depth — raised rubber pad feel
   box-shadow:
-    2px 2px 4px rgba(0,0,0,0.55),
+    2px 2px 4px rgba(0,0,0,0.8),
     0.5px 0.5px 1px $pad-off-hi inset,
     -1px -1px 3px $pad-off-rim inset;
 
@@ -351,7 +357,7 @@ $util-face:     #c7c3c0;
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.05);
     transform: translate(-50%, -50%);
     pointer-events: none;
   }
@@ -360,48 +366,44 @@ $util-face:     #c7c3c0;
     transform: scale(0.92);
     box-shadow:
       0 0 0 rgba(0,0,0,0),
-      inset 1px 1px 3px rgba(0,0,0,0.8);
+      inset 1px 1px 3px rgba(0,0,0,0.9);
   }
 
-  // Active — purple / KICK / TOM
   &--on#{&}--purple {
     background: $pad-purple;
     box-shadow:
-      2px 2px 4px rgba(0,0,0,0.45),
+      2px 2px 4px rgba(0,0,0,0.6),
       1px 1px 2px rgba(200,150,255,0.35) inset,
       -2px -2px 4px $pad-purple-lo inset,
-      0 0 8px rgba($pad-purple, 0.4);
+      0 0 10px rgba($pad-purple, 0.5);
 
     .pad-btn__pip { background: rgba(255,255,255,0.25); }
   }
 
-  // Active — green / SNARE / CLAP
   &--on#{&}--green {
     background: $pad-green;
     box-shadow:
-      2px 2px 4px rgba(0,0,0,0.45),
+      2px 2px 4px rgba(0,0,0,0.6),
       1px 1px 2px rgba(100,255,150,0.35) inset,
       -2px -2px 4px $pad-green-lo inset,
-      0 0 8px rgba($pad-green, 0.35);
+      0 0 10px rgba($pad-green, 0.45);
 
     .pad-btn__pip { background: rgba(255,255,255,0.25); }
   }
 
-  // Active — pink / HH
   &--on#{&}--pink {
     background: $pad-pink;
     box-shadow:
-      2px 2px 4px rgba(0,0,0,0.45),
+      2px 2px 4px rgba(0,0,0,0.6),
       1px 1px 2px rgba(255,150,220,0.35) inset,
       -2px -2px 4px $pad-pink-lo inset,
-      0 0 8px rgba($pad-pink, 0.35);
+      0 0 10px rgba($pad-pink, 0.45);
 
     .pad-btn__pip { background: rgba(255,255,255,0.25); }
   }
 
-  // Current column indicator
   &--current {
-    outline: 1px solid rgba($amber, 0.45);
+    outline: 1px solid rgba($amber, 0.5);
     outline-offset: 1px;
   }
 
@@ -409,7 +411,6 @@ $util-face:     #c7c3c0;
     filter: brightness(1.25);
   }
 
-  // Group separator gap
   &--group-end {
     margin-right: 5px;
   }
@@ -424,13 +425,14 @@ $util-face:     #c7c3c0;
   gap: 18px;
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 2px solid rgba(0,0,0,0.14);
+  border-top: 2px solid rgba(255,255,255,0.05);
   flex-wrap: wrap;
 }
 
 .ctrl-section {
   display: flex;
   align-items: center;
+  margin-left: 3rem;
   gap: 10px;
 
   &--bpm {
@@ -468,95 +470,196 @@ $util-face:     #c7c3c0;
     margin-top: auto;
   }
 
-  // EXIT button
-  &--exit {
-    flex-direction: row;
-    align-items: center;
-    gap: 6px;
-    background: $btn-face;
-    color: $label-dark;
-    width: auto;
-    height: auto;
-    padding: 8px 14px;
-    box-shadow:
-      rgba(0,0,0,0.35) 3px 3px 5px,
-      $btn-shadow-l 1px 1px 1px inset,
-      $btn-face -2px -2px 5px inset;
-
-    .hw-btn__icon { font-size: 16px; }
-    .hw-btn__label { font-size: 9px; margin-top: 0; }
-
-    &:active {
-      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 4px rgba(0,0,0,0.5);
-      transform: scale(0.96);
-    }
-
-    &:hover { transform: scale(1.02); }
-  }
-
-  // PLAY button
+  // PLAY button — green
   &--play {
     width: 64px;
     height: 64px;
-    background: $play-off;
-    color: #fff;
+    background: linear-gradient(160deg, darken($play-green, 5%) 0%, $play-green 60%);
+    color: $play-green-hi;
     box-shadow:
-      rgba(0,0,0,0.4) 4px 4px 6px,
-      rgba(170,168,164,0.5) 1px 1px 1px inset,
-      $play-off -2px -2px 5px inset;
+      rgba(0,0,0,0.6) 4px 4px 8px,
+      rgba($play-green-hi, 0.15) 1px 1px 2px inset,
+      darken($play-green, 12%) -2px -2px 6px inset,
+      0 0 18px rgba($play-green, 0.2);
 
-    &:active {
-      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 5px rgba(0,0,0,0.7);
+    .hw-btn__label { color: rgba($play-green-hi, 0.8); }
+
+    &:not(.hw-btn--inactive):active {
+      box-shadow: rgba(0,0,0,0.6) 0 0 0, inset 1px 1px 6px rgba(0,0,0,0.8);
       transform: scale(0.94);
     }
 
-    &:hover { transform: scale(1.03); }
-  }
-
-  // PLAYING state (red STOP)
-  &--playing {
-    background: $play-on;
-    box-shadow:
-      rgba(0,0,0,0.4) 4px 4px 6px,
-      #fb702c 2px 2px 8px inset,
-      $play-on -3px -3px 1px inset;
-
-    &:active {
-      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 5px rgba(0,0,0,0.7);
+    &:not(.hw-btn--inactive):hover {
+      transform: scale(1.03);
+      box-shadow:
+        rgba(0,0,0,0.6) 4px 4px 8px,
+        rgba($play-green-hi, 0.2) 1px 1px 2px inset,
+        darken($play-green, 12%) -2px -2px 6px inset,
+        0 0 28px rgba($play-green, 0.35);
     }
   }
 
-  // UTIL buttons (random / clear)
+  // STOP button — red
+  &--stop {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(160deg, darken($stop-red, 5%) 0%, $stop-red 60%);
+    color: $stop-red-hi;
+    box-shadow:
+      rgba(0,0,0,0.6) 4px 4px 8px,
+      rgba($stop-red-hi, 0.2) 1px 1px 2px inset,
+      darken($stop-red, 12%) -2px -2px 6px inset,
+      0 0 18px rgba($stop-red, 0.25);
+
+    .hw-btn__label { color: rgba($stop-red-hi, 0.9); }
+
+    &:not(.hw-btn--inactive):active {
+      box-shadow: rgba(0,0,0,0.6) 0 0 0, inset 1px 1px 6px rgba(0,0,0,0.8);
+      transform: scale(0.94);
+    }
+
+    &:not(.hw-btn--inactive):hover {
+      transform: scale(1.03);
+      box-shadow:
+        rgba(0,0,0,0.6) 4px 4px 8px,
+        rgba($stop-red-hi, 0.2) 1px 1px 2px inset,
+        darken($stop-red, 12%) -2px -2px 6px inset,
+        0 0 28px rgba($stop-red, 0.4);
+    }
+  }
+
+  // Inactive state — dims whichever play/stop button is not in use
+  &--inactive {
+    opacity: 0.28;
+    cursor: default;
+    filter: saturate(0.3);
+    box-shadow:
+      rgba(0,0,0,0.5) 2px 2px 4px,
+      inset 1px 1px 3px rgba(0,0,0,0.6) !important;
+  }
+
+  // UTIL buttons (random)
   &--util {
     width: 58px;
     height: 58px;
     background: $util-face;
-    color: #5f5f5f;
+    color: $label-mid;
     box-shadow:
-      rgba(0,0,0,0.35) 4px 4px 6px,
-      rgba(255,255,255,0.8) 1px 1px 1px inset,
-      $util-face -2px -2px 5px inset;
+      rgba(0,0,0,0.5) 4px 4px 6px,
+      rgba(255,255,255,0.05) 1px 1px 1px inset,
+      $btn-shadow-d -2px -2px 5px inset;
 
     &:active {
-      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 4px rgba(0,0,0,0.5), $util-face -2px -2px 5px inset;
+      box-shadow: rgba(0,0,0,0.5) 0 0 0, inset 1px 1px 4px rgba(0,0,0,0.7);
       transform: scale(0.94);
     }
 
     &:hover { transform: scale(1.02); }
   }
 
+  // CLEAR button — orange
   &--clear {
-    background: #d42a02;
-    color: #fff;
+    background: linear-gradient(160deg, darken($clear-orange, 5%) 0%, $clear-orange 60%);
+    color: $clear-orange-hi;
     box-shadow:
-      rgba(0,0,0,0.4) 4px 4px 6px,
-      #fb702c 2px 2px 8px inset,
-      #d42a02 -3px -3px 1px inset;
+      rgba(0,0,0,0.6) 4px 4px 6px,
+      rgba($clear-orange-hi, 0.2) 1px 1px 2px inset,
+      darken($clear-orange, 14%) -3px -3px 2px inset,
+      0 0 16px rgba($clear-orange, 0.2);
+
+    .hw-btn__label { color: rgba($clear-orange-hi, 0.9); }
 
     &:active {
-      box-shadow: rgba(0,0,0,0.4) 0 0 0, inset 1px 1px 5px rgba(0,0,0,0.7);
+      box-shadow: rgba(0,0,0,0.6) 0 0 0, inset 1px 1px 5px rgba(0,0,0,0.8);
+      transform: scale(0.94);
+    }
+
+    &:hover {
+      box-shadow:
+        rgba(0,0,0,0.6) 4px 4px 6px,
+        rgba($clear-orange-hi, 0.2) 1px 1px 2px inset,
+        darken($clear-orange, 14%) -3px -3px 2px inset,
+        0 0 24px rgba($clear-orange, 0.35);
     }
   }
+}
+
+
+// ─── Power Button (EXIT) ──────────────────────────────────────────────────────
+// Circular metallic power button — ON (green) by default, dims on hover to
+// signal "about to power off / exit".
+
+.power-btn {
+  // Sizing & shape
+  position: relative;
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
+  flex-shrink: 0;
+  cursor: pointer;
+
+  // Recessed face (inset shadows = pressed-in ring bevel)
+  background-image: linear-gradient(145deg, #171717, #444245);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Raised outer disc behind the button
+  &::before {
+    content: "";
+    position: absolute;
+    width: calc(100% + 0.25em);
+    height: calc(100% + 0.25em);
+    border-radius: 50%;
+    background-image: linear-gradient(145deg, #262626, #606060);
+    z-index: -1;
+    box-shadow: 11px 11px 22px #141414, -11px -11px 22px #525252;
+  }
+
+  // ── DEFAULT: ON state — machine is active ─────────────────────────────────
+  border: 4px solid rgb(0, 215, 0);
+  box-shadow: inset -2px -2px 0 #5e5e5e, inset 2px 2px 0 #1c1c1c;
+  animation: power-border 0.3s linear alternate-reverse infinite;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.1s;
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: rgb(0, 215, 0);
+      animation: power-fill 0.3s linear alternate-reverse infinite;
+      transition: fill 0.25s;
+    }
+  }
+
+  // ── Hover: transition to OFF — signalling "about to exit" ─────────────────
+  &:hover {
+    animation: none;
+    border-color: #d42727;
+
+    .power-btn__icon svg {
+      animation: none;
+      fill: #d42727;
+    }
+  }
+
+  &:active { transform: scale(0.94); }
+}
+
+@keyframes power-fill {
+  to { fill: rgba(0, 194, 0, 0.95); }
+}
+
+@keyframes power-border {
+  to { border-color: rgba(0, 175, 0, 0.88); }
 }
 
 
@@ -582,12 +685,12 @@ $util-face:     #c7c3c0;
     inset: 0;
     border-radius: 50%;
     background:
-      conic-gradient(from -2deg, #efefff88, #00000088, #efefff88, #00000088, #efefff88),
-      radial-gradient(circle at 30% 25%, #d8d3cc, #6a6560);
-    border: 3px solid rgba(0,0,0,0.6);
+      conic-gradient(from -2deg, #ffffff18, #00000088, #ffffff18, #00000088, #ffffff18),
+      radial-gradient(circle at 30% 25%, #2e2e3a, #111118);
+    border: 3px solid rgba(0,0,0,0.8);
     box-shadow:
-      0 4px 10px rgba(0,0,0,0.5),
-      inset 0 1px 0 rgba(255,255,255,0.35);
+      0 4px 12px rgba(0,0,0,0.8),
+      inset 0 1px 0 rgba(255,255,255,0.12);
     transform: rotate(var(--knob-deg, -135deg));
     transition: none;
   }
@@ -598,10 +701,10 @@ $util-face:     #c7c3c0;
     left: 50%;
     width: 3px;
     height: 13px;
-    background: #1a1a1a;
+    background: $amber;
     border-radius: 2px;
     transform: translateX(-50%);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 0 6px rgba($amber, 0.6);
   }
 
   &__notches {
@@ -617,7 +720,7 @@ $util-face:     #c7c3c0;
     left: 50%;
     width: 7px;
     height: 1.5px;
-    background: rgba($label-mid, 0.5);
+    background: rgba($label-light, 0.4);
     border-radius: 1px;
     transform:
       translate(-50%)
@@ -652,15 +755,15 @@ $util-face:     #c7c3c0;
     color: $amber;
     text-shadow:
       0 0 10px $amber,
-      0 0 24px rgba($amber, 0.35);
+      0 0 28px rgba($amber, 0.4);
     letter-spacing: 0.05em;
     background: $display-bg;
     border-radius: 5px;
     padding: 6px 14px 4px;
-    border: 2px solid #0a0a08;
+    border: 2px solid #000;
     box-shadow:
-      inset 0 2px 6px rgba(0,0,0,0.8),
-      inset 0 0 0 1px rgba(255,255,255,0.02);
+      inset 0 2px 8px rgba(0,0,0,0.99),
+      inset 0 0 0 1px rgba(255,255,255,0.015);
     min-width: 80px;
     text-align: center;
     line-height: 1;
@@ -669,7 +772,7 @@ $util-face:     #c7c3c0;
   &__unit {
     font-size: 8px;
     letter-spacing: 0.2em;
-    color: rgba($amber, 0.4);
+    color: rgba($amber, 0.35);
     text-align: center;
   }
 

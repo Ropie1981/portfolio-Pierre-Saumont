@@ -21,12 +21,6 @@ export class AboutComponent {
       color: "var(--color-secondary)",
     },
     {
-      category: "Cloud_Infra",
-      title: "AWS & DevOps",
-      desc: "Déploiement cloud, CI/CD, infrastructure. Git Flow et méthodologie Agile.",
-      color: "var(--color-tertiary)",
-    },
-    {
       category: "Background",
       title: "Vision Transversale",
       desc: "11 ans en assurance, 6 ans en audio. Adaptabilité, rigueur et communication.",
@@ -51,6 +45,4 @@ export class AboutComponent {
     { name: "Allemand", level: "B2", pct: 65, color: "var(--color-secondary)" },
     { name: "Espagnol", level: "A2", pct: 25, color: "var(--color-tertiary)" },
   ];
-
-  profilePic = "./assets/photoprofilpierre.jpg";
 }
