@@ -30,6 +30,7 @@ export class BeatboxComponent implements OnDestroy {
   private knobMouseUpBound = this.onKnobMouseUp.bind(this);
 
   isPlaying = signal(false);
+  isExporting = signal(false);
   bpm = signal(120);
   activeStep = signal(-1);
 
@@ -163,6 +164,96 @@ export class BeatboxComponent implements OnDestroy {
     }
   }
 
+  // ── Export ─────────────────────────────────────────────────────────────────
+
+  async exportTrack(bars = 2): Promise<void> {
+    if (this.isExporting()) return;
+    this.isExporting.set(true);
+
+    try {
+      const sampleRate = 44100;
+      const stepDuration = 60 / this.bpm() / 4; // seconds per 16th note
+      const totalDuration = stepDuration * 16 * bars;
+      // Add a small tail so the last hit decays cleanly (0.6 s)
+      const totalSamples = Math.ceil((totalDuration + 0.6) * sampleRate);
+
+      const offlineCtx = new OfflineAudioContext(2, totalSamples, sampleRate);
+
+      for (let bar = 0; bar < bars; bar++) {
+        for (let si = 0; si < 16; si++) {
+          const t = (bar * 16 + si) * stepDuration;
+          this.tracks.forEach((track, ti) => {
+            if (track.steps[si]) {
+              this.renderSound(offlineCtx, ti, track.volume, t);
+            }
+          });
+        }
+      }
+
+      const renderedBuffer = await offlineCtx.startRendering();
+      const wavBlob = this.encodeWav(renderedBuffer);
+      this.downloadBlob(wavBlob, `beat_${this.bpm()}bpm.wav`);
+    } finally {
+      this.isExporting.set(false);
+    }
+  }
+
+  /** Encode an AudioBuffer as a 16-bit stereo WAV Blob. */
+  private encodeWav(buffer: AudioBuffer): Blob {
+    const numChannels = 2;
+    const sampleRate = buffer.sampleRate;
+    const samples = buffer.length;
+    const blockAlign = numChannels * 2; // 16-bit = 2 bytes per sample per channel
+    const byteRate = sampleRate * blockAlign;
+    const dataSize = samples * blockAlign;
+    const wavBuffer = new ArrayBuffer(44 + dataSize);
+    const view = new DataView(wavBuffer);
+
+    const write = (offset: number, str: string) => {
+      for (let i = 0; i < str.length; i++)
+        view.setUint8(offset + i, str.charCodeAt(i));
+    };
+
+    write(0, "RIFF");
+    view.setUint32(4, 36 + dataSize, true);
+    write(8, "WAVE");
+    write(12, "fmt ");
+    view.setUint32(16, 16, true); // PCM chunk size
+    view.setUint16(20, 1, true); // PCM format
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, byteRate, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, 16, true); // bit depth
+    write(36, "data");
+    view.setUint32(40, dataSize, true);
+
+    // Interleave L/R channels
+    const left = buffer.getChannelData(0);
+    // Use right channel if present, otherwise duplicate left (mono synthesis)
+    const right = buffer.numberOfChannels > 1 ? buffer.getChannelData(1) : left;
+
+    let offset = 44;
+    for (let i = 0; i < samples; i++) {
+      view.setInt16(offset, Math.max(-1, Math.min(1, left[i])) * 0x7fff, true);
+      offset += 2;
+      view.setInt16(offset, Math.max(-1, Math.min(1, right[i])) * 0x7fff, true);
+      offset += 2;
+    }
+
+    return new Blob([wavBuffer], { type: "audio/wav" });
+  }
+
+  private downloadBlob(blob: Blob, filename: string): void {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    // Small delay before revoking so the browser has time to start the download
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
   // ── Knob drag interaction ──────────────────────────────────────────────────
 
   onKnobMouseDown(event: MouseEvent) {
@@ -218,10 +309,20 @@ export class BeatboxComponent implements OnDestroy {
   }
 
   // ── Audio synthesis ────────────────────────────────────────────────────────
+  // All synthesis methods accept BaseAudioContext so they work with both
+  // the live AudioContext and the OfflineAudioContext used during export.
 
   private playSound(ti: number, vol: number) {
     const ctx = this.getCtx();
-    const t = ctx.currentTime;
+    this.renderSound(ctx, ti, vol, ctx.currentTime);
+  }
+
+  private renderSound(
+    ctx: BaseAudioContext,
+    ti: number,
+    vol: number,
+    t: number,
+  ) {
     switch (ti) {
       case 0:
         this.kick(ctx, t, vol);
@@ -244,7 +345,7 @@ export class BeatboxComponent implements OnDestroy {
     }
   }
 
-  private kick(ctx: AudioContext, t: number, vol: number) {
+  private kick(ctx: BaseAudioContext, t: number, vol: number) {
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
     osc.connect(g);
@@ -257,7 +358,7 @@ export class BeatboxComponent implements OnDestroy {
     osc.stop(t + 0.5);
   }
 
-  private snare(ctx: AudioContext, t: number, vol: number) {
+  private snare(ctx: BaseAudioContext, t: number, vol: number) {
     const len = Math.floor(ctx.sampleRate * 0.2);
     const buf = ctx.createBuffer(1, len, ctx.sampleRate);
     const d = buf.getChannelData(0);
@@ -286,7 +387,7 @@ export class BeatboxComponent implements OnDestroy {
     osc.stop(t + 0.08);
   }
 
-  private hhClosed(ctx: AudioContext, t: number, vol: number) {
+  private hhClosed(ctx: BaseAudioContext, t: number, vol: number) {
     const dur = 0.06;
     const len = Math.floor(ctx.sampleRate * dur);
     const buf = ctx.createBuffer(1, len, ctx.sampleRate);
@@ -307,7 +408,7 @@ export class BeatboxComponent implements OnDestroy {
     noise.stop(t + dur);
   }
 
-  private hhOpen(ctx: AudioContext, t: number, vol: number) {
+  private hhOpen(ctx: BaseAudioContext, t: number, vol: number) {
     const dur = 0.35;
     const len = Math.floor(ctx.sampleRate * dur);
     const buf = ctx.createBuffer(1, len, ctx.sampleRate);
@@ -328,7 +429,7 @@ export class BeatboxComponent implements OnDestroy {
     noise.stop(t + dur);
   }
 
-  private clap(ctx: AudioContext, t: number, vol: number) {
+  private clap(ctx: BaseAudioContext, t: number, vol: number) {
     for (let k = 0; k < 3; k++) {
       const off = k * 0.012;
       const dur = 0.06;
@@ -352,7 +453,7 @@ export class BeatboxComponent implements OnDestroy {
     }
   }
 
-  private tom(ctx: AudioContext, t: number, vol: number) {
+  private tom(ctx: BaseAudioContext, t: number, vol: number) {
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
     osc.connect(g);

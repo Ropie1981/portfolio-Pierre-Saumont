@@ -803,3 +803,43 @@ $util-face:     #2a2a35;
   letter-spacing: 0.12em;
   margin-left: auto;
 }
+// ─── Export Button ────────────────────────────────────────────────────────────
+
+$export-blue:    #1d4ed8;
+$export-blue-hi: #93c5fd;
+
+.hw-btn--export {
+  background: linear-gradient(160deg, darken($export-blue, 5%) 0%, $export-blue 60%);
+  color: $export-blue-hi;
+  box-shadow:
+    rgba(0,0,0,0.6) 4px 4px 6px,
+    rgba($export-blue-hi, 0.2) 1px 1px 2px inset,
+    darken($export-blue, 14%) -3px -3px 2px inset,
+    0 0 16px rgba($export-blue, 0.2);
+
+  .hw-btn__label { color: rgba($export-blue-hi, 0.9); }
+
+  &:not(:disabled):active {
+    box-shadow: rgba(0,0,0,0.6) 0 0 0, inset 1px 1px 5px rgba(0,0,0,0.8);
+    transform: scale(0.94);
+  }
+
+  &:not(:disabled):hover {
+    box-shadow:
+      rgba(0,0,0,0.6) 4px 4px 6px,
+      rgba($export-blue-hi, 0.2) 1px 1px 2px inset,
+      darken($export-blue, 14%) -3px -3px 2px inset,
+      0 0 24px rgba($export-blue, 0.35);
+  }
+}
+
+.hw-btn--exporting {
+  cursor: not-allowed;
+  opacity: 0.65;
+  animation: export-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes export-pulse {
+  from { box-shadow: rgba(0,0,0,0.6) 4px 4px 6px, 0 0 10px rgba($export-blue, 0.2); }
+  to   { box-shadow: rgba(0,0,0,0.6) 4px 4px 6px, 0 0 22px rgba($export-blue-hi, 0.5); }
+}

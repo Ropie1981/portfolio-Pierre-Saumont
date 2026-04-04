@@ -170,6 +170,19 @@
         <span class="material-symbols-outlined hw-btn__icon">close</span>
         <span class="hw-btn__label">CLEAR</span>
       </button>
+      <button
+        class="hw-btn hw-btn--util hw-btn--export"
+        [class.hw-btn--exporting]="isExporting()"
+        [disabled]="isExporting()"
+        (click)="exportTrack()"
+      >
+        <span class="material-symbols-outlined hw-btn__icon">
+          {{ isExporting() ? "hourglass_top" : "download" }}
+        </span>
+        <span class="hw-btn__label">
+          {{ isExporting() ? "RENDERING…" : "EXPORT WAV" }}
+        </span>
+      </button>
     </div>
 
     <!-- Hint -->
