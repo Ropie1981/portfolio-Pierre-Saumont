@@ -3,12 +3,12 @@
     <div class="section-header">
       <span class="section-label">// CONTACT</span>
       <h2 class="section-title">
-        PATCH_BAY <span class="accent">// SEND_DEMO</span>
+        PATCH_BAY <span class="accent">// CONTACT</span>
       </h2>
-      <p class="section-desc">
+      <!-- <p class="section-desc">
         Ouvert aux opportunités — CDI, freelance, missions. N'hésitez pas à
         m'écrire.
-      </p>
+      </p> -->
     </div>
 
     <div class="contact-layout">
@@ -60,13 +60,31 @@
               required
             ></textarea>
           </div>
-          <button type="submit" class="submit-btn" [disabled]="submitted()">
-            @if (!submitted()) {
-              <span class="material-symbols-outlined">send</span>
-              SEND_SIGNAL
-            } @else {
+
+          <!-- Feedback erreur -->
+          @if (hasError()) {
+            <div class="form-error">
+              <span class="material-symbols-outlined">error</span>
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <button
+            type="submit"
+            class="submit-btn"
+            [disabled]="submitted() || isLoading()"
+          >
+            @if (isLoading()) {
+              <span class="material-symbols-outlined spin"
+                >progress_activity</span
+              >
+              SENDING...
+            } @else if (submitted()) {
               <span class="material-symbols-outlined">check_circle</span>
               SIGNAL_SENT ✓
+            } @else {
+              <span class="material-symbols-outlined">send</span>
+              SEND_SIGNAL
             }
           </button>
         </form>
@@ -95,24 +113,32 @@
         <div class="info-block">
           <span class="info-label">SOCIAL_FEED</span>
           <div class="info-list">
-            <a href="https://linkedin.com" target="_blank" class="info-link">
+            <a
+              href="https://fr.linkedin.com/in/pierre-saumont-87bba5182"
+              target="_blank"
+              class="info-link"
+            >
               <span class="material-symbols-outlined">open_in_new</span>
               LinkedIn
             </a>
-            <a href="https://github.com" target="_blank" class="info-link">
+            <a
+              href="https://github.com/Ropie1981"
+              target="_blank"
+              class="info-link"
+            >
               <span class="material-symbols-outlined">code</span>
               GitHub
             </a>
           </div>
         </div>
 
-        <div class="availability-badge">
+        <!-- <div class="availability-badge">
           <div class="avail-dot"></div>
           <div>
             <div class="avail-title">DISPONIBLE</div>
             <div class="avail-sub">CDI · Freelance · Mission</div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

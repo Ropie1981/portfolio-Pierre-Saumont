@@ -80,7 +80,7 @@
         flex-direction: column;
         font-family: var(--font-headline);
         font-weight: 800;
-        font-size: clamp(3.5rem, 10vw, 9rem);
+        font-size: clamp(3.2rem, 8vw, 7rem);
         line-height: 0.92;
         letter-spacing: -0.03em;
         text-transform: uppercase;
@@ -246,7 +246,7 @@
       /* Ticker */
       .ticker {
         position: absolute;
-        bottom: 4rem;
+        bottom: 2.5rem;
         left: 0;
         width: 100%;
         overflow: hidden;

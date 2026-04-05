@@ -57,7 +57,7 @@ export class ProjectsComponent {
       featured: true,
       type: "BEAT_LAB · 2026",
       title: "Beat Lab · Boîte à rythmes",
-      desc: "Reproduction d'une boîte à rythmes vintage. Focus sur l'interface utilisateur et les animations CSS pour une expérience immersive.",
+      desc: "Reproduction d'une boîte à rythmes vintage. Focus sur l'interface utilisateur et les animations CSS pour une expérience immersive. Utilisation de l'API Web Audio pour une synthèse sonore en temps réel. Ajouté au portfolio pour le fun.",
       tags: ["Angular", "API Web Audio", "SCSS"],
       github: "https://github.com",
       live: null,
