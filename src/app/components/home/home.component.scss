@@ -85,6 +85,10 @@
         letter-spacing: -0.03em;
         text-transform: uppercase;
         color: var(--color-text);
+
+        @media screen and (max-width: 600px) {
+          font-size: clamp(2rem, 10vw, 3rem);
+        }
       }
 
       .name-line.accent {

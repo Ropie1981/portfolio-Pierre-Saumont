@@ -25,31 +25,87 @@
       <span class="branding__model">ROPIE-01</span>
     </div>
 
-    <div class="console-header__right">
-      <!-- Beat position LEDs -->
-      <div class="beat-leds">
-        @for (b of [0, 1, 2, 3]; track b) {
-          <div class="beat-led-group">
-            <div class="beat-led" [class.beat-led--on]="getBeat(b)"></div>
-            <span class="beat-led__label">{{ b + 1 }}</span>
-          </div>
-        }
+    <div class="console-header__right mobile-hide">
+      <!-- Sound Mode selector -->
+      <div class="ctrl-section ctrl-section--mode">
+        <span class="ctrl-section__label">SOUND MODE</span>
+        <div class="mode-selector">
+          @for (m of soundModes; track m.id) {
+            <button
+              class="mode-btn"
+              [class.mode-btn--active]="soundMode() === m.id"
+              [class.mode-btn--electro]="m.id === 'electro'"
+              [class.mode-btn--hiphop]="m.id === 'hiphop'"
+              [class.mode-btn--techno]="m.id === 'techno'"
+              (click)="setSoundMode(m.id)"
+            >
+              {{ m.label }}
+            </button>
+          }
+        </div>
       </div>
 
-      <!-- Status VFD display -->
-      <div class="vfd-display">
-        <span
-          class="vfd-display__text"
-          [class.vfd-display__text--playing]="isPlaying()"
-        >
-          {{ isPlaying() ? "&#9654; PLAYING" : "&#9632; WAITING" }}
-        </span>
+      <!-- VU Meter -->
+      <div class="vu-meter">
+        <div class="vu-meter__scale">
+          <span>+3</span>
+          <span>0</span>
+          <span>-6</span>
+          <span>-20</span>
+        </div>
+        <div class="vu-meter__channels">
+          <div class="vu-meter__channel">
+            @for (seg of vuSegments; track $index; let i = $index) {
+              <div
+                class="vu-seg"
+                [class.vu-seg--on]="vuL() >= seg.threshold"
+                [class.vu-seg--peak]="vuPeakSegL() === i"
+                [class.vu-seg--green]="seg.zone === 'green'"
+                [class.vu-seg--yellow]="seg.zone === 'yellow'"
+                [class.vu-seg--red]="seg.zone === 'red'"
+              ></div>
+            }
+          </div>
+          <div class="vu-meter__channel">
+            @for (seg of vuSegments; track $index; let i = $index) {
+              <div
+                class="vu-seg"
+                [class.vu-seg--on]="vuR() >= seg.threshold"
+                [class.vu-seg--peak]="vuPeakSegR() === i"
+                [class.vu-seg--green]="seg.zone === 'green'"
+                [class.vu-seg--yellow]="seg.zone === 'yellow'"
+                [class.vu-seg--red]="seg.zone === 'red'"
+              ></div>
+            }
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
   <!-- Main sequencer panel -->
   <main class="sequencer-panel">
+    <!-- Mobile: step page navigation (hidden on desktop via CSS) -->
+    <div class="step-page-nav">
+      <button
+        class="page-nav-btn"
+        (click)="prevMobilePage()"
+        [disabled]="mobileStepPage() === 0"
+      >
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <span class="page-nav-label"
+        >{{ mobileStepPage() * 4 + 1 }} – {{ mobileStepPage() * 4 + 4 }}</span
+      >
+      <button
+        class="page-nav-btn"
+        (click)="nextMobilePage()"
+        [disabled]="mobileStepPage() === 3"
+      >
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+
     <!-- Step number ruler -->
     <div class="step-ruler">
       <div class="step-ruler__spacer"></div>
@@ -59,6 +115,7 @@
             class="step-ruler__num"
             [class.step-ruler__num--active]="activeStep() === i"
             [class.step-ruler__num--group-end]="(i + 1) % 4 === 0 && i !== 15"
+            [class.step-ruler__num--mobile-hidden]="!isStepInPage(i)"
           >
             {{ n }}
           </div>
@@ -89,6 +146,7 @@
                 [class.pad-btn--green]="step && track.color === 'green'"
                 [class.pad-btn--pink]="step && track.color === 'pink'"
                 [class.pad-btn--group-end]="(si + 1) % 4 === 0 && si !== 15"
+                [class.pad-btn--mobile-hidden]="!isStepInPage(si)"
                 (click)="toggleStep(ti, si)"
               >
                 <span class="pad-btn__pip"></span>
@@ -119,6 +177,32 @@
       >
         <span class="material-symbols-outlined hw-btn__icon">stop</span>
         <span class="hw-btn__label">STOP</span>
+      </button>
+    </div>
+
+    <!-- Utility buttons -->
+    <div class="ctrl-section ctrl-section--utils">
+      <button class="hw-btn hw-btn--util" (click)="randomize()">
+        <span class="material-symbols-outlined hw-btn__icon">shuffle</span>
+        <span class="hw-btn__label">RANDOM</span>
+      </button>
+      <button class="hw-btn hw-btn--util hw-btn--clear" (click)="clearAll()">
+        <span class="material-symbols-outlined hw-btn__icon">close</span>
+        <span class="hw-btn__label">CLEAR</span>
+      </button>
+      <button
+        class="hw-btn hw-btn--util hw-btn--export mobile-hide"
+        [class.hw-btn--exporting]="isExporting()"
+        [class.hw-btn--no-pattern]="!hasPattern() && !isExporting()"
+        [disabled]="isExporting() || !hasPattern()"
+        (click)="exportTrack()"
+      >
+        <span class="material-symbols-outlined hw-btn__icon">
+          {{ isExporting() ? "hourglass_top" : "download" }}
+        </span>
+        <span class="hw-btn__label">
+          {{ isExporting() ? "RENDERING…" : "EXPORT WAV" }}
+        </span>
       </button>
     </div>
 
@@ -160,33 +244,28 @@
       </div>
     </div>
 
-    <!-- Utility buttons -->
-    <div class="ctrl-section ctrl-section--utils">
-      <button class="hw-btn hw-btn--util" (click)="randomize()">
-        <span class="material-symbols-outlined hw-btn__icon">shuffle</span>
-        <span class="hw-btn__label">RANDOM</span>
-      </button>
-      <button class="hw-btn hw-btn--util hw-btn--clear" (click)="clearAll()">
-        <span class="material-symbols-outlined hw-btn__icon">close</span>
-        <span class="hw-btn__label">CLEAR</span>
-      </button>
-      <button
-        class="hw-btn hw-btn--util hw-btn--export"
-        [class.hw-btn--exporting]="isExporting()"
-        [disabled]="isExporting()"
-        (click)="exportTrack()"
+    <!-- Beat position LEDs -->
+    <div class="beat-leds mobile-hide">
+      @for (b of [0, 1, 2, 3]; track b) {
+        <div class="beat-led-group">
+          <div class="beat-led" [class.beat-led--on]="getBeat(b)"></div>
+          <span class="beat-led__label">{{ b + 1 }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- Status VFD display -->
+    <div class="vfd-display mobile-hide">
+      <span
+        class="vfd-display__text"
+        [class.vfd-display__text--playing]="isPlaying()"
       >
-        <span class="material-symbols-outlined hw-btn__icon">
-          {{ isExporting() ? "hourglass_top" : "download" }}
-        </span>
-        <span class="hw-btn__label">
-          {{ isExporting() ? "RENDERING…" : "EXPORT WAV" }}
-        </span>
-      </button>
+        {{ isPlaying() ? "&#9654; PLAYING" : "&#9632; WAITING" }}
+      </span>
     </div>
 
     <!-- Hint -->
-    <p class="console-hint">// CLICK STEPS TO ACTIVATE</p>
+    <!-- <p class="console-hint mobile-hide">// CLICK STEPS TO ACTIVATE</p> -->
     <!-- Corner screws -->
     <div class="screw screw--tl"><div class="screw__slot"></div></div>
     <div class="screw screw--tr"><div class="screw__slot"></div></div>

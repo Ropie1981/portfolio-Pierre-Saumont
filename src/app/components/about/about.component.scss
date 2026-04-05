@@ -34,6 +34,10 @@
         text-transform: uppercase;
         letter-spacing: -0.02em;
         color: var(--color-text);
+
+        @media (max-width: 600px) {
+          font-size: clamp(1.5rem, 6vw, 2.5rem);
+        }
       }
 
       .accent {
