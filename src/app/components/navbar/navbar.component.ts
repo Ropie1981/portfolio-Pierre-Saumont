@@ -28,6 +28,13 @@ export class NavbarComponent {
     this.menuOpen.set(false);
   }
 
+  scrollToTop() {
+    if (this.appState.showBeatbox()) {
+      this.appState.closeBeatbox();
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   scrollTo(id: string) {
     if (this.appState.showBeatbox()) {
       this.appState.closeBeatbox();

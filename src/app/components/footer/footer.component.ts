@@ -9,4 +9,8 @@ import { Component } from "@angular/core";
 export class FooterComponent {
   year = new Date().getFullYear();
   angularVersion = "21";
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 }

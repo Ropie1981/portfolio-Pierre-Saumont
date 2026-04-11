@@ -1,5 +1,5 @@
 <header [class.scrolled]="isScrolled()">
-  <div class="nav-logo">
+  <div class="nav-logo" (click)="scrollToTop()" style="cursor: pointer">
     <span class="logo-bracket">[</span>
     PS
     <span class="logo-bracket">]</span>
@@ -18,8 +18,12 @@
       <span class="link-index">03</span>
       <span class="link-label">PROJETS</span>
     </a>
-    <a (click)="openBeatbox(); closeMenu()" class="nav-link">
+    <a (click)="scrollTo('contact'); closeMenu()" class="nav-link">
       <span class="link-index">04</span>
+      <span class="link-label">CONTACT</span>
+    </a>
+    <a (click)="openBeatbox(); closeMenu()" class="nav-link">
+      <span class="link-index">05</span>
       <span class="link-label">LAB</span>
     </a>
   </nav>

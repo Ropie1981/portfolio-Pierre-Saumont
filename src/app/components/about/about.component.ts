@@ -11,19 +11,19 @@ export class AboutComponent {
     {
       category: "Core_Expertise",
       title: "Front-End Angular",
-      desc: "Composants, services, routing, formulaires réactifs. Architecture modulaire et scalable.",
+      desc: "Composants, services, routing, reactive forms. UI moderne et responsive.",
       color: "var(--color-primary)",
     },
     {
       category: "Back_End",
       title: "Symfony / API Platform",
-      desc: "APIs REST robustes, entités, contrôleurs. Architecture API-first.",
+      desc: "APIs REST robustes, entités, contrôleurs. Auth JWT, sécurité, tests unitaires.",
       color: "var(--color-secondary)",
     },
     {
       category: "Background",
       title: "Vision Transversale",
-      desc: "11 ans en assurance, 6 ans en audio. Adaptabilité, rigueur et communication.",
+      desc: "11 ans en assurance, 6 ans en audio. Adaptabilité, rigueur et gestion client.",
       color: "var(--color-primary)",
     },
   ];
